@@ -47,7 +47,9 @@ headers = {
 
 
 def get_track_id(track):
-    
+    # We make sure track is a string
+    track = str(track)
+
     # Request for the track
     search_url = "https://api.spotify.com/v1/search"
     search_params = {
@@ -62,29 +64,36 @@ def get_track_id(track):
 
     # Verify if there are results
     if 'tracks' in search_data and 'items' in search_data['tracks'] and search_data['tracks']['items']:
-        # Récupérer l'ID de la première chanson trouvée
+        # We take the ID of the first song found.
         track_id = search_data['tracks']['items'][0]['id']
+        return (track_id)
 
-        # Récupérer les caractéristiques de la piste
-        features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
-        features_response = requests.get(features_url, headers=headers)
-        features_data = features_response.json()
-
-        # Vérifier si des résultats ont été trouvés pour les caractéristiques de la piste
-        if features_data:
-            print("Caractéristiques de la piste 'Verona' de Muse :")
-            print(f"Clé: {features_data['key']}")
-            print(f"Tempo: {features_data['tempo']}")
-            print(f"Énergie: {features_data['energy']}")
-            # Ajoutez d'autres caractéristiques selon vos besoins
-        else:
-            print("Aucun résultat trouvé pour les caractéristiques de la piste 'Verona' de Muse")
     else:
-        print("Aucun résultat trouvé pour la chanson 'Verona' de Muse")
+        print("Aucun résultat trouvé pour la chanson " + track)
+        return(None)
 
 
 
+"""
+    # Request the caracteristics
+    features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
+    features_response = requests.get(features_url, headers=headers)
+    features_data = features_response.json()
 
+    # Vérifier si des résultats ont été trouvés pour les caractéristiques de la piste
+    if features_data:
+        print("Caractéristiques de la piste " + track + " de Muse :")
+        print(f"Clé: {features_data['key']}")
+        print(f"Tempo: {features_data['tempo']}")
+        print(f"Énergie: {features_data['energy']}")
+        # Ajoutez d'autres caractéristiques selon vos besoins
+    else:
+        print("Aucun résultat trouvé pour les caractéristiques de la piste " + track + " de Muse")
+"""
+
+print(get_track_id("Verona"))
+
+"""
 # URL de l'endpoint pour obtenir les caractéristiques de la piste
 features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
 
@@ -135,3 +144,5 @@ if response.status_code == 200:
     print(len(analysis_data.items()))
 else:
     print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
+
+"""
