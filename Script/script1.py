@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-path = '/home/onyxia/work/Python-pour-la-Data-Science/playlist.txt'
+path = '/home/onyxia/work/Python-pour-la-Data-Science/'
 
 def playlist_txt_to_list(path):
     """"
@@ -25,3 +25,15 @@ def playlist_txt_to_list(path):
     return(playlist)
 
 #print(playlist_txt_to_list(path))
+
+
+playlist = playlist_txt_to_list(path + 'playlist.txt')
+
+def write_titles(path, name):
+    name = str(name)
+    with open(path + name, "r", encoding = "utf-8") as file:
+        for title in playlist :
+            file.write(f"{title}\n")
+    return
+
+write_titles(path, 'titles.txt')
