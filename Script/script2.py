@@ -132,39 +132,9 @@ def get_track_analysis(track_id):
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
         return(None)
 
-data = get_track_analysis(track_id)
-df = pd.DataFrame(data)
-print(df)
-
-
-
-"""
-
-# URL de l'endpoint pour obtenir les caractéristiques de la piste
-analysis_url = f"https://api.spotify.com/v1/audio-analysis/{track_id}"
-
-# En-tête de la requête avec le jeton d'accès
-headers = {
-    'Authorization': f'Bearer {token}',
-}
-
-# Effectuer la requête GET
-response = requests.get(analysis_url, headers=headers)
-
-# Vérifier la réponse
-if response.status_code == 200:
-    # La réponse est au format JSON, imprimez toutes les caractéristiques
-    analysis_data = response.json()
-    print("Caractéristiques de la piste :")
-    i = 0
-    for key, value in analysis_data.items():
-        print(f"{key}: {value}", i, "\n \n \n")
-        i += 1
-    print(len(analysis_data.items()))
-else:
-    print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
-
-"""
-
-
-
+data_analysis = get_track_analysis(track_id)
+data_features = get_track_features(track_id)
+df1 = pd.DataFrame([data_analysis])
+df2 = pd.DataFrame([data_features])
+print(df1)
+print(df2)
