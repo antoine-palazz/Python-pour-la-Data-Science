@@ -29,6 +29,8 @@ def playlist_txt_to_list(path):
 
 playlist = playlist_txt_to_list(path + 'playlist.txt')
 
+
+"""
 def write_titles(path, name):
     name = str(name)
     with open(path + name, "r", encoding = "utf-8") as file:
@@ -37,3 +39,4 @@ def write_titles(path, name):
     return
 
 write_titles(path, 'titles.txt')
+"""
