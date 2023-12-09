@@ -88,7 +88,7 @@ def get_track_features(track_id):
         for key, value in features_data.items():
             print(f"{key}: {value}")
     else:
-        print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
+        print(f"Erreur lors de la requête : {features_response.status_code} - {features_response.text}")
 
 print(get_track_features(track_id))
 
@@ -140,11 +140,11 @@ print(df1)
 print(df2)
 
 from script1 import playlist
-playlist0 = playlist[:]
+playlist0 = playlist[:5]
 print(playlist0)
 Titles = pd.DataFrame({'Title': playlist0})
 print(Titles)
-
+print(data_features)
 Features = list(data_features.keys())
 print(Features)
 
@@ -153,9 +153,10 @@ Titles['track_features'] = Titles['track_id'].apply(get_track_features)
 print(Titles.info)
 for feature in Features:
     Titles[feature] = Titles['track_features'].apply(lambda x: x.get(feature))
-Titles.drop(columns=['track_features'])
+Titles.drop(columns=['track_features'], inplace = True)
 
 print(Titles)
-
+"""
 path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles.csv'
 Titles.to_csv(path, index=False)
+"""
