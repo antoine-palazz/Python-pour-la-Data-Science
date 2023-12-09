@@ -3,6 +3,12 @@ from collections import OrderedDict
 path = '/home/onyxia/work/Python-pour-la-Data-Science/playlist.txt'
 
 def playlist_txt_to_list(path):
+    """"
+    Summary:
+        créer une liste de chansons(str) à partir d'un fichier txt
+    Args:
+        path (_str_): chemin du ficher txt où se trouvent les titres
+    """
     fichier = open(path, "r")
     playlist = fichier.read()
     fichier.close()
