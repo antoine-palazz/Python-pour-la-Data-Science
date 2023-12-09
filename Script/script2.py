@@ -38,8 +38,6 @@ def access_token():
         return(None)
 
 token = access_token()
-
-
 # En-tête de la requête avec le jeton d'accès
 headers = {
     'Authorization': f'Bearer {token}',
@@ -72,54 +70,75 @@ def get_track_id(track):
         print("Aucun résultat trouvé pour la chanson " + track)
         return(None)
 
+track_id = get_track_id("Verona")
+print(track_id)
 
-
-"""
+def get_track_features(track_id):
+    track_id = str(track_id)
     # Request the caracteristics
     features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
     features_response = requests.get(features_url, headers=headers)
     features_data = features_response.json()
 
-    # Vérifier si des résultats ont été trouvés pour les caractéristiques de la piste
-    if features_data:
-        print("Caractéristiques de la piste " + track + " de Muse :")
-        print(f"Clé: {features_data['key']}")
-        print(f"Tempo: {features_data['tempo']}")
-        print(f"Énergie: {features_data['energy']}")
-        # Ajoutez d'autres caractéristiques selon vos besoins
+    # Vérifier la réponse
+    if features_response.status_code == 200:
+        # La réponse est au format JSON, imprimez toutes les caractéristiques
+        features_data = features_response.json()
+        print("Caractéristiques de la piste :")
+        for key, value in features_data.items():
+            print(f"{key}: {value}")
     else:
-        print("Aucun résultat trouvé pour les caractéristiques de la piste " + track + " de Muse")
+        print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
+
+print(get_track_features(track_id))
+
+def get_track_features(track_id):
+    """
+    Renvoie le dictionnaire des features du morceau.
+    """
+    track_id = str(track_id)
+    # Request the caracteristics
+    features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
+    response = requests.get(features_url, headers=headers)
+
+    # Vérifier la réponse
+    if response.status_code == 200:
+        # La réponse est au format JSON, imprimez toutes les caractéristiques
+        data = response.json()
+        return(data)
+    else:
+        print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
+        return(None)
+
+print(get_track_features(track_id))
+
+
+
+def get_track_analysis(track_id):
+    """
+    Renvoie le dictionnaire des features du morceau.
+    """
+    track_id = str(track_id)
+    # Request the caracteristics
+    analysis_url = f"https://api.spotify.com/v1/audio-analysis/{track_id}"
+    response = requests.get(analysis_url, headers=headers)
+
+    # Vérifier la réponse
+    if response.status_code == 200:
+        # La réponse est au format JSON, imprimez toutes les caractéristiques
+        data = response.json()
+        return(data)
+    else:
+        print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
+        return(None)
+
+data = get_track_analysis(track_id)
+df = pd.DataFrame(data)
+print(df)
+
+
+
 """
-
-print(get_track_id("Verona"))
-
-"""
-# URL de l'endpoint pour obtenir les caractéristiques de la piste
-features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
-
-# En-tête de la requête avec le jeton d'accès
-headers = {
-    'Authorization': f'Bearer {token}',
-}
-
-# Effectuer la requête GET
-response = requests.get(features_url, headers=headers)
-
-# Vérifier la réponse
-if response.status_code == 200:
-    # La réponse est au format JSON, imprimez toutes les caractéristiques
-    features_data = response.json()
-    print("Caractéristiques de la piste :")
-    for key, value in features_data.items():
-        print(f"{key}: {value}")
-else:
-    print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
-
-
-
-
-
-
 
 # URL de l'endpoint pour obtenir les caractéristiques de la piste
 analysis_url = f"https://api.spotify.com/v1/audio-analysis/{track_id}"
@@ -146,3 +165,6 @@ else:
     print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
 
 """
+
+
+
