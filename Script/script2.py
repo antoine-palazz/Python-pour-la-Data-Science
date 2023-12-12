@@ -37,6 +37,16 @@ def access_token():
         print(f"Erreur lors de la demande du token : {response.status_code} - {response.text}")
         return(None)
 
+def access_API():
+    # Access to the API
+    token = access_token()
+
+    # Request with the access token :
+    headers = {
+        'Authorization': f'Bearer {token}',
+    }
+    return (token, headers)
+
 
 def get_track_id(track, headers):
     # We make sure track is a string
@@ -53,7 +63,6 @@ def get_track_id(track, headers):
     # Search
     search_response = requests.get(search_url, params=search_params, headers=headers)
     search_data = search_response.json()
-
     # Verify if there are results
     if 'tracks' in search_data and 'items' in search_data['tracks'] and search_data['tracks']['items']:
         # We take the ID of the first song found.
@@ -71,17 +80,14 @@ def get_track_features(track_id, headers):
     Return a dictionnary for the track features.
     track_id my be a list of under 100 tracks or just a string for one single track.
     """
-
     if type(track_id) == list:
-        
-    else :
-        track_id = str(track_id)
-    track_id = str(track_id)
-    # Request the caracteristics
+        track_id = ','.join(track_id)
+
     features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
     response = requests.get(features_url, headers=headers)
+    print(response)
 
-    # Vérifier la réponse
+    # Verify the response: 
     if response.status_code == 200:
         # La réponse est au format JSON, imprimez toutes les caractéristiques
         data = response.json()
@@ -89,6 +95,7 @@ def get_track_features(track_id, headers):
     else:
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
         return(None)
+
 
 
 def get_track_analysis(track_id, headers):
