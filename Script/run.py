@@ -10,10 +10,10 @@ headers = {
     'Authorization': f'Bearer {token}',
 }
 
+ids = [get_track_id('Lose Yourself', headers), get_track_id('Verona', headers)]
+print(ids)
 
-
-print(get_features_labels(headers))
-print(get_analysis_labels(headers))
+print(get_track_features(ids, headers))
 """
 playlist0 = playlist[:5]
 print(playlist0)
