@@ -37,14 +37,8 @@ def access_token():
         print(f"Erreur lors de la demande du token : {response.status_code} - {response.text}")
         return(None)
 
-token = access_token()
-# En-tête de la requête avec le jeton d'accès
-headers = {
-    'Authorization': f'Bearer {token}',
-}
 
-
-def get_track_id(track):
+def get_track_id(track, headers):
     # We make sure track is a string
     track = str(track)
 
@@ -70,32 +64,18 @@ def get_track_id(track):
         print("Aucun résultat trouvé pour la chanson " + track)
         return(None)
 
-track_id = get_track_id("Get Lucky")
-print(track_id)
 
-def get_track_features(track_id):
-    track_id = str(track_id)
-    # Request the caracteristics
-    features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
-    features_response = requests.get(features_url, headers=headers)
-    features_data = features_response.json()
 
-    # Vérifier la réponse
-    if features_response.status_code == 200:
-        # La réponse est au format JSON, imprimez toutes les caractéristiques
-        features_data = features_response.json()
-        print("Caractéristiques de la piste :")
-        for key, value in features_data.items():
-            print(f"{key}: {value}")
-    else:
-        print(f"Erreur lors de la requête : {features_response.status_code} - {features_response.text}")
-
-print(get_track_features(track_id))
-
-def get_track_features(track_id):
+def get_track_features(track_id, headers):
     """
-    Renvoie le dictionnaire des features du morceau.
+    Return a dictionnary for the track features.
+    track_id my be a list of under 100 tracks or just a string for one single track.
     """
+
+    if type(track_id) == list:
+        
+    else :
+        track_id = str(track_id)
     track_id = str(track_id)
     # Request the caracteristics
     features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
@@ -110,11 +90,8 @@ def get_track_features(track_id):
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
         return(None)
 
-print(get_track_features(track_id))
 
-
-
-def get_track_analysis(track_id):
+def get_track_analysis(track_id, headers):
     """
     Renvoie le dictionnaire des features du morceau.
     """
@@ -132,31 +109,28 @@ def get_track_analysis(track_id):
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
         return(None)
 
-data_analysis = get_track_analysis(track_id)
-data_features = get_track_features(track_id)
-df1 = pd.DataFrame([data_analysis])
-df2 = pd.DataFrame([data_features])
-print(df1)
-print(df2)
 
-from script1 import playlist
-playlist0 = playlist[:5]
-print(playlist0)
-Titles = pd.DataFrame({'Title': playlist0})
-print(Titles)
-print(data_features)
-Features = list(data_features.keys())
-print(Features)
+def get_features_labels(headers):
+    """
+    Returns a list of the features labels the spotify API gives us
+    """
+    track_id = get_track_id("Lose Yourself", headers)
+    data_features = get_track_features(track_id, headers)
 
-Titles['track_id'] = Titles['Title'].apply(get_track_id)
-Titles['track_features'] = Titles['track_id'].apply(get_track_features)
-print(Titles.info)
-for feature in Features:
-    Titles[feature] = Titles['track_features'].apply(lambda x: x.get(feature))
-Titles.drop(columns=['track_features'], inplace = True)
+    df = pd.DataFrame([data_features])
+    features = df.columns.tolist()
 
-print(Titles)
-"""
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles.csv'
-Titles.to_csv(path, index=False)
-"""
+    return features
+
+
+def get_analysis_labels(headers):
+    """
+    Returns a list of the features labels the spotify API gives us
+    """
+    track_id = get_track_id("Lose Yourself", headers)
+    data_analysis = get_track_analysis(track_id, headers)
+
+    df = pd.DataFrame([data_analysis])
+    analysis = df.columns.tolist()
+
+    return analysis
