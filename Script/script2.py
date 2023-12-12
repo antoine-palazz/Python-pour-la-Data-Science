@@ -134,7 +134,7 @@ def get_track_analysis(track_id):
 
 data = get_track_analysis(track_id)
 df = pd.DataFrame(data)
-print(df)
+print(df.head())
 
 
 
