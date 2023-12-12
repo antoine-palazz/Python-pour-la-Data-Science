@@ -35,3 +35,17 @@ ax1.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
 ax1.axis('equal')  
 plt.tight_layout()
 plt.show()
+
+
+#Matrice des corrélations
+
+f = plt.figure()
+
+plt.matshow(df.corr())
+plt.xticks(range(df.shape[1]), df.columns, rotation=45)
+plt.yticks(range(df.shape[1]), df.columns)
+
+cb = plt.colorbar()
+cb.ax.tick_params()
+plt.title('Matrice de corrélation')
+
