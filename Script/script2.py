@@ -70,7 +70,7 @@ def get_track_id(track):
         print("Aucun résultat trouvé pour la chanson " + track)
         return(None)
 
-track_id = get_track_id("Verona")
+track_id = get_track_id("Get Lucky")
 print(track_id)
 
 def get_track_features(track_id):
