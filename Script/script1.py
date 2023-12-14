@@ -24,12 +24,12 @@ def playlist_txt_to_list(path):
         playlist[k] = song[ind+2:]
     return(playlist)
 
-#print(playlist_txt_to_list(path))
 
 
 playlist = playlist_txt_to_list(path + 'playlist.txt')
-
-
+jazz = playlist_txt_to_list(path + 'jazz.txt')
+classical = playlist_txt_to_list(path + 'classical.txt')
+print(len(classical))
 """
 def write_titles(path, name):
     name = str(name)
