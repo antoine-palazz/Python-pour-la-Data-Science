@@ -18,11 +18,3 @@ def get_artist_genres(artist_name):
         return genres
     else:
         return None
-
-# Exemple d'utilisation
-artist_name = 'Bob Marley'
-genres = get_artist_genres(artist_name)
-if genres:
-    print(f"Genres de l'artiste {artist_name}: {', '.join(genres)}")
-else:
-    print(f"Aucun résultat trouvé pour l'artiste {artist_name}")

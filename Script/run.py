@@ -1,6 +1,7 @@
 #from script1 import playlist
 from script2 import *
 from script4 import Titles
+from script5 import get_artist_genres
 
 
 # Access to the API
@@ -30,8 +31,8 @@ for feature in Features:
     Titles[feature] = Titles['track_features'].apply(lambda x: x.get(feature))
 Titles.drop(columns=['track_features'], inplace = True)
 
+Titles['genres'] = Titles['Artist'].apply(get_artist_genres)
 print(Titles.head())
-"""
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles.csv'
+
+path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles2.csv'
 Titles.to_csv(path, index=False)
-"""
