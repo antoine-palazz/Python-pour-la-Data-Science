@@ -119,7 +119,7 @@ def get_track_features(track_id, headers):
     if response.status_code == 200:
         # La réponse est au format JSON, imprimez toutes les caractéristiques
         data = response.json()
-        return(data)
+        return(data['audio_features'])
     else:
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
         return(None)
