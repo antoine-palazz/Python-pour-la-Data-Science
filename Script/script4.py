@@ -73,12 +73,16 @@ def get_all_playlist_tracks(playlist_id, access_token):
 # Affichez les ids et les titres des musiques ainsin que les ids et les noms des artistes
 def get_track_id_and_artist(tracks):
     if tracks:
+        info =[]
         for track in tracks:
-            print(track['track']['id'],track['track']['name'],track['track']['artists'][0]['id'],track['track']['artists'][0]['name'])
+            info.append([track['track']['id'],track['track']['name'],track['track']['artists'][0]['id'],track['track']['artists'][0]['name']])
+        return info
     else:
         print("Aucune piste trouvée.")
+        return None
 
 # Obtenez toutes les pistes de la playlist
 playlist_tracks = get_all_playlist_tracks(playlist_id, access_token)
 # Affichez les titres des pistes
-get_track_id_and_artist(playlist_tracks)
+info_playlist = get_track_id_and_artist(playlist_tracks)
+print(info_playlist)
