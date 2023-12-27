@@ -73,16 +73,25 @@ def get_all_playlist_tracks(playlist_id, access_token):
 # Affichez les ids et les titres des musiques ainsin que les ids et les noms des artistes
 def get_track_id_and_artist(tracks):
     if tracks:
-        info =[]
+        title = []
+        track_id = []
+        artist = []
+        artist_id = []
         for track in tracks:
-            info.append([track['track']['id'],track['track']['name'],track['track']['artists'][0]['id'],track['track']['artists'][0]['name']])
-        return info
+            title.append(track['track']['name'])
+            track_id.append(track['track']['id'])
+            artist.append(track['track']['artists'][0]['name'])
+            artist_id.append(track['track']['artists'][0]['id'])
+        df = pd.DataFrame({'Title':title})
+        df['track_id'] = track_id
+        df['Artist'] = artist
+        df['artist_id'] = artist_id
+        return df
     else:
         print("Aucune piste trouvée.")
         return None
 
-# Obtenez toutes les pistes de la playlist
+
 playlist_tracks = get_all_playlist_tracks(playlist_id, access_token)
-# Affichez les titres des pistes
 info_playlist = get_track_id_and_artist(playlist_tracks)
 print(info_playlist)

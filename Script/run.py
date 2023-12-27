@@ -1,5 +1,6 @@
 from script1 import playlist
 from script2 import *
+from script4 import *
 
 
 # Access to the API
