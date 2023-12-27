@@ -2,7 +2,8 @@ from script2 import *
 
 access_token = access_token()
 
-playlist_id = '37i9dQZF1DX69KJk2S04Hp'
+#playlist_id = '37i9dQZF1DX69KJk2S04Hp'
+playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
 
 # Obtenez les pistes de la playlist avec gestion de la pagination
 def get_all_playlist_tracks(playlist_id, access_token):

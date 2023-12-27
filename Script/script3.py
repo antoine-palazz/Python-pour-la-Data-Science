@@ -1,23 +1,21 @@
 #%%
-
+import pandas as pd
 import matplotlib.pyplot as plt
+Titles_en_csv = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles.csv'
 
+# Lire le fichier CSV avec des options supplémentaires
+Titles = pd.read_csv(Titles_en_csv, delimiter=',')
 
-#juste un exemple
-
-df ={}
-df['genre']=[['rock','rap'],['rap'],['pop'],['classique'],['pop'],['pop']]
-
-
+# Afficher les premières lignes du DataFrame
+print(Titles.head())
 #création d'un dictionnaire des genres
-
+genres_list = Titles['genres'].tolist()
 genres = {}
-for genre_artiste in df['genre']:
-    for genre in genre_artiste:
-        if genre in genres.keys():
-            genres[genre] += 1
-        else:
-            genres[genre] = 1
+for genre in genres_list:
+    if genre in genres.keys():
+        genres[genre] += 1
+    else:
+        genres[genre] = 1
 
 liste_des_genres = []
 nb_pour_chaque_genre = []
@@ -36,16 +34,18 @@ ax1.axis('equal')
 plt.tight_layout()
 plt.show()
 
-
+'''
 #Matrice des corrélations
 
 f = plt.figure()
 
-plt.matshow(df.corr())
-plt.xticks(range(df.shape[1]), df.columns, rotation=45)
-plt.yticks(range(df.shape[1]), df.columns)
+plt.matshow(Titles.corr())
+plt.xticks(range(Titles.shape[1]), Titles.columns, rotation=45)
+plt.yticks(range(Titles.shape[1]), Titles.columns)
 
 cb = plt.colorbar()
 cb.ax.tick_params()
 plt.title('Matrice de corrélation')
 
+'''
+# %%
