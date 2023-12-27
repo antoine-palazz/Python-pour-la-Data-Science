@@ -83,8 +83,9 @@ def get_track_features(track_id, headers):
     if type(track_id) == list:
         track_id = ','.join(track_id)
 
-    features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
-    response = requests.get(features_url, headers=headers)
+    params = {'ids': track_id}
+    features_url = "https://api.spotify.com/v1/audio-features"
+    response = requests.get(features_url, headers=headers,params=params)
     print(response)
 
     # Verify the response: 
