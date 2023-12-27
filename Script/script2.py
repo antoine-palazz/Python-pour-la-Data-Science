@@ -75,6 +75,23 @@ def get_track_id(track, headers):
 
 
 
+def get_audio_features(track_id, headers):
+    """
+    Return a dictionnary for the track.
+    track_id must be just a string for one single track.
+    """
+    audio_features_url = f'https://api.spotify.com/v1/audio-features/{track_id}'
+
+    response = requests.get(audio_features_url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Erreur lors de la récupération des caractéristiques audio de la piste. Code d'erreur : {response.status_code}")
+        return None
+
+
+
 def get_track_features(track_id, headers):
     """
     Return a dictionnary for the track features.
@@ -123,7 +140,7 @@ def get_features_labels(headers):
     Returns a list of the features labels the spotify API gives us
     """
     track_id = get_track_id("Lose Yourself", headers)
-    data_features = get_track_features(track_id, headers)
+    data_features = get_audio_features(track_id, headers)
 
     df = pd.DataFrame([data_features])
     features = df.columns.tolist()
