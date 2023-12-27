@@ -1,6 +1,6 @@
-from script1 import playlist
+#from script1 import playlist
 from script2 import *
-from script4 import *
+from script4 import Titles
 
 
 # Access to the API
