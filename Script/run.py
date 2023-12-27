@@ -25,7 +25,8 @@ print(Features)
 
 Titles['track_id'] = Titles['Title'].apply(get_track_id,args=(headers,))
 Titles['track_features'] = Titles['track_id'].apply(get_track_features,args=(headers,))
-print(Titles.info)
+Titles['track_features'] = Titles['track_features'].apply(lambda x: x.get('audio_features'))
+Titles['track_features'] = Titles['track_features'].apply(lambda x: x[0])
 
 for feature in Features:
     Titles[feature] = Titles['track_features'].apply(lambda x: x.get(feature))
