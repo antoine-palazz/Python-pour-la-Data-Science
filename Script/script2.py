@@ -73,7 +73,17 @@ def get_track_id(track, headers):
         print("Aucun résultat trouvé pour la chanson " + track)
         return(None)
 
+def get_track_details(track_ids, headers):
+    tracks_url = 'https://api.spotify.com/v1/tracks'
+    params = {'ids': ','.join(track_ids)}
 
+    response = requests.get(tracks_url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        return response.json()['tracks']
+    else:
+        print(f"Erreur lors de la récupération des détails des pistes. Code d'erreur : {response.status_code}")
+        return None
 
 def get_audio_features(track_id, headers):
     """

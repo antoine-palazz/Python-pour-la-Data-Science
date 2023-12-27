@@ -74,7 +74,7 @@ def get_all_playlist_tracks(playlist_id, access_token):
 def print_track_titles(tracks):
     if tracks:
         for track in tracks:
-            print(track['track']['name'])
+            print(track['track']['id'])
     else:
         print("Aucune piste trouvée.")
 
