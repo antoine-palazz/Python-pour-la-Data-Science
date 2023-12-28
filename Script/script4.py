@@ -2,7 +2,6 @@ from script2 import *
 
 access_token = access_token()
 
-#playlist_id = '37i9dQZF1DX69KJk2S04Hp'
 playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
 
 # Obtenez les pistes de la playlist avec gestion de la pagination
@@ -47,7 +46,7 @@ def get_track_id_and_artist(tracks):
             artist_id.append(track['track']['artists'][0]['id'])
         df = pd.DataFrame({'Title':title})
         df['track_id'] = track_id
-        df['Artist'] = artist
+        df['artist'] = artist
         df['artist_id'] = artist_id
         return df
     else:

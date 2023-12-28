@@ -107,10 +107,10 @@ def get_track_features(track_id, headers):
     Return a dictionnary for the track features.
     track_id my be a list of under 100 tracks or just a string for one single track.
     """
-    if type(track_id) == list:
-        track_id = ','.join(track_id)
+    
+    str_track_id = ','.join(track_id)
 
-    params = {'ids': track_id}
+    params = {'ids': str_track_id}
     features_url = "https://api.spotify.com/v1/audio-features"
     response = requests.get(features_url, headers=headers,params=params)
     print(response)
@@ -122,7 +122,7 @@ def get_track_features(track_id, headers):
         return(data['audio_features'])
     else:
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
-        return(None)
+        return([None]*len(track_id))
 
 
 
