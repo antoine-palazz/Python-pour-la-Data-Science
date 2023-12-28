@@ -1,7 +1,7 @@
 """
 Run this file if you want to get the access token and the headers.
 """
-from script2 import access_token
+from functions import access_token
 
 
 # Access to the API

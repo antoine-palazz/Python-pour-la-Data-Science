@@ -1,18 +1,17 @@
-#from script1 import playlist
-from script2 import *
-from script4 import Titles
-from script5 import get_artists_genres
+from Script.functions import *
 
 
 # Access to the API
 token = access_token()
+headers = {'Authorization': f'Bearer {token}',}
 
-# Request with the access token :
-headers = {
-    'Authorization': f'Bearer {token}',
-}
 
-track_list = Titles['track_id'].tolist()
+playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
+playlist_tracks = get_all_playlist_tracks(playlist_id, access_token)
+Dataset = get_track_id_and_artist(playlist_tracks)
+
+
+track_list = Dataset['track_id'].tolist()
 nb_musiques = len(track_list)
 print("il y a", nb_musiques, "musiques")
 nb_utilisation_token_track = nb_musiques // 100 + int(nb_musiques % 100 != 0)
