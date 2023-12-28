@@ -37,7 +37,7 @@ def sorting_by_occurrence(list):
 sorted_genres = sorting_by_occurrence(union_genres)
 liste_finale = [[i, sorted_genres[1][i]] for i in sorted_genres[0]]
 
-sorting_by_occurrence(union_genres)
+#sorting_by_occurrence(union_genres)
 """
 with open(path + "Genres_Musicaux_multiplicité.txt", 'w') as file:
     file.write(f"Il y a {len(set(union_genres))} genres nommés différemment\n")
@@ -155,16 +155,22 @@ with open(path + "Genres_Musicaux_simplifiés.txt", 'w') as file:
 """
 
 genres_par_occurrences = [i[0] for i in new_list]
+
+
+
 tracks_genre = []
 for genre_list in data_set['genres'].tolist():
-    if isinstance(genre_list, str):
+    if isinstance(genre_list, str) or isinstance(genre_list, list):
         tracks_genre.append(ast.literal_eval(genre_list))
     else:
         tracks_genre.append(['Pas de genre'])
-    
+
+print(tracks_genre, tracks_genre.count(['Pas de genre']))
+
 tracks_genre_simplified = []
 for genre_list in tracks_genre:
     i = 0
+    genre_list = [i for genre in genre_list for i in divide_str(genre)]
     for genre in new_list:
         if genre[0] in genre_list:
             tracks_genre_simplified.append(genre[0])
@@ -173,7 +179,7 @@ for genre_list in tracks_genre:
     if i == 0:
         tracks_genre_simplified.append('Sans genre')
 
-print(tracks_genre_simplified, len(tracks_genre_simplified))
+#print(tracks_genre_simplified, len(tracks_genre_simplified))
 
 tracks_genre_simplified_per_occurrence = sorting_by_occurrence(tracks_genre_simplified)
 tracks_genre_simplified_per_occurrence = [[i, tracks_genre_simplified_per_occurrence[1][i]] for i in tracks_genre_simplified_per_occurrence[0]]
