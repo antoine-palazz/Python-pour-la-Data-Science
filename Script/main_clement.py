@@ -155,3 +155,4 @@ with open(path + "Genres_Musicaux_simplifiés.txt", 'w') as file:
 
 print(somme1, somme2)
 print(divide_str('rock'))
+print('bonjour')
