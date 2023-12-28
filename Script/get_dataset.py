@@ -12,6 +12,8 @@ Dataset = get_track_id_and_artist(playlist_tracks)
 # Now we have a dataset of the title, the artist name, the artist id.
 
 
+
+#We now request the track features of our tracks.
 track_list = Dataset['track_id'].tolist()
 nb_musiques = len(track_list)
 print("il y a", nb_musiques, "musiques")
@@ -31,6 +33,10 @@ for feature in Features:
     Dataset[feature] = Dataset['track_features'].apply(lambda x: x.get(feature))
 Dataset.drop(columns=['track_features'], inplace = True)
 
+
+
+
+#We now request the artist genre for our tracks.
 artist_list = Dataset['artist_id'].tolist()
 nb_artist = len(artist_list)
 print("il y a", nb_artist, "artistes")
@@ -45,7 +51,10 @@ Dataset['genres'] = artist_genres_list
 
 print(Dataset.head())
 
-# Select the path you want 
+
+
+
+#We now save our dataset to csv file.
 #path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles3.csv'
 #path = "/Users/clementgadeau/Python pour la DATA/DATA_SET/Our DATA_SET/"
 Dataset.to_csv(path, index=False)
