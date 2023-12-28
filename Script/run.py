@@ -46,5 +46,5 @@ Titles['genres'] = artist_genres_list
 print(Titles.head())
 
 
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles2.csv'
+path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles3.csv'
 Titles.to_csv(path, index=False)
