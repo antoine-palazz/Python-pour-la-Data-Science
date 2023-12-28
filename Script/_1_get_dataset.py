@@ -8,4 +8,4 @@ playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
 playlist_tracks = get_all_playlist_tracks(playlist_id, token)
 Titles = get_track_id_and_artist(playlist_tracks)
 
-print(Titles.heas())
+print(Titles.head())
