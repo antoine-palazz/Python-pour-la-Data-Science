@@ -58,7 +58,7 @@ def divide_str(string):
 
 # Appliquer la fonction à chaque élément de la liste
 different_words = set([word for string in union_genres_set for word in divide_str(string)])
-print(different_words)
+#print(different_words)
 
 genre_list = []
 encountered_words = set()
@@ -91,9 +91,9 @@ for genre in liste_finale :
         autres_genres += [genre[0]]
 
 
-print("Les autres genres sont ", autres_genres, len(autres_genres))
+#print("Les autres genres sont ", autres_genres, len(autres_genres))
 
-print(liste_finale)
+#print(liste_finale)
 # Étape 4 : Itérez sur la liste initiale et remplacez les genres
 nouvelle_liste_finale = []
 for genre in union_genres:
@@ -147,12 +147,46 @@ for i in new_list :
 for j in liste_finale:
     somme2 += j[1]
 
-
+"""
 with open(path + "Genres_Musicaux_simplifiés.txt", 'w') as file:
     file.write(f"Il y a {len(new_list)} genres nommés différemment\n")
     for element in new_list:
         file.write(f"{element}\n")
+"""
 
-print(somme1, somme2)
-print(divide_str('rock'))
-print('bonjour')
+genres_par_occurrences = [i[0] for i in new_list]
+tracks_genre = []
+for genre_list in data_set['genres'].tolist():
+    if isinstance(genre_list, str):
+        tracks_genre.append(ast.literal_eval(genre_list))
+    else:
+        tracks_genre.append(['Pas de genre'])
+    
+tracks_genre_simplified = []
+for genre_list in tracks_genre:
+    i = 0
+    for genre in new_list:
+        if genre[0] in genre_list:
+            tracks_genre_simplified.append(genre[0])
+            i += 1
+            break
+    if i == 0:
+        tracks_genre_simplified.append('Sans genre')
+
+print(tracks_genre_simplified, len(tracks_genre_simplified))
+
+tracks_genre_simplified_per_occurrence = sorting_by_occurrence(tracks_genre_simplified)
+tracks_genre_simplified_per_occurrence = [[i, tracks_genre_simplified_per_occurrence[1][i]] for i in tracks_genre_simplified_per_occurrence[0]]
+
+somme3 = 0
+for i in tracks_genre_simplified_per_occurrence :
+    somme3 += i[1]
+
+
+with open(path + "Genres_Musicaux_data.txt", 'w') as file:
+    file.write(f"On obtient {len(tracks_genre_simplified_per_occurrence)} genres différents\n")
+    file.write(f"Il y a {len(tracks_genre_simplified)} morceaux différents\n")
+    file.write(f"Je compte {somme3} morceaux différents avec mon alogrithme\n")
+    for element in tracks_genre_simplified_per_occurrence:
+        file.write(f"{element}\n")
+        
