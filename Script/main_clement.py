@@ -71,40 +71,87 @@ for genre, occurence in liste_finale:
     else:
 """
 
-# Étape 1 : Créez une liste des genres à un seul mot    
-genres_un_mot = [genre[0] for genre in liste_finale if len(divide_str(genre[0])) == 1]
-# Étape 2 : Créez une liste des genres à deux mots
-genres_deux_mots = [genre[0] for genre in liste_finale if len(divide_str(genre[0])) == 2]
-# Étape 3 : Créez une liste des genres à trois mots
-genres_trois_mots = [genre[0] for genre in liste_finale if len(divide_str(genre[0])) == 3]
+# Étape 1 : Créez une liste des genres à un seul mot  
+genres_un_mot = []
+genres_deux_mots = []
+genres_trois_mots = []
+autres_genres = []
 
-autres_genres = [genre[0] for genre in liste_finale if genre[0] not in genres_un_mot + genres_deux_mots + genres_trois_mots]
+for genre in liste_finale : 
+    # Étape 1 : Créez une liste des genres à un seul mot  
+    if len(divide_str(genre[0])) == 1 :
+        genres_un_mot += [genre[0]]
+    # Étape 2 : Créez une liste des genres à deux mots
+    elif len(divide_str(genre[0])) == 2:
+        genres_deux_mots += [genre[0]]
+    # Étape 3 : Créez une liste des genres à trois mots
+    elif len(divide_str(genre[0])) == 3:
+        genres_trois_mots += [genre[0]]
+    else :
+        autres_genres += [genre[0]]
+
+
 print("Les autres genres sont ", autres_genres, len(autres_genres))
 
+print(liste_finale)
 # Étape 4 : Itérez sur la liste initiale et remplacez les genres
 nouvelle_liste_finale = []
-for genre, occurrence in liste_finale:
+for genre in union_genres:
     mots = divide_str(genre)
 
     # Cas 1 : Genre à un mot
     if len(mots) == 1 and mots[0] in genres_un_mot:
-        nouvelle_liste_finale.append((mots[0], occurrence))
+        nouvelle_liste_finale.append(mots[0])
 
-    # Cas 2 : Genre à deux mots
-    elif len(mots) == 2 and any(word in genres_un_mot for word in mots):
-        nouvelle_liste_finale.append((next(word for word in mots if word in genres_un_mot), occurrence))
-
-    # Cas 3 : Genre à trois mots
-    elif len(mots) == 3 and any(word in genres_un_mot for word in mots):
-        nouvelle_liste_finale.append((next(word for word in mots if word in genres_un_mot), occurrence))
-    
-    # Ajoutez d'autres cas au besoin pour les genres composés de plus de trois mots
+    # Cas > 1 : Genre à deux mots
+    elif len(mots) > 1 and set(mots) & set(genres_un_mot) != set():
+        nouvelle_liste_finale.append(next(word for word in mots if word in genres_un_mot))
 
     # Cas par défaut : Aucun changement
     else:
-        nouvelle_liste_finale.append((genre, occurrence))
-    
+        nouvelle_liste_finale.append(genre)
 
 
-print(nouvelle_liste_finale)
+nouvelle_liste_finale_finale = []
+for genre in nouvelle_liste_finale:
+    mots = divide_str(genre)
+    if len(mots) > 2 and set(mots) & set(genres_deux_mots) != set():
+        i = 0
+        for word1 in mots:
+            for word2 in mots:
+                if word2 != word1:
+                    if word1 + ' ' + word2 in genres_deux_mots:
+                        nouvelle_liste_finale_finale.append(word1 + ' ' + word2)
+                        i += 1
+                        break
+                    elif word2 + ' ' + word1 in genres_deux_mots:
+                        nouvelle_liste_finale_finale.append(word2 + ' ' + word1)
+                        i += 1
+                        break
+            if i == 1:
+                break
+        
+    else :
+        nouvelle_liste_finale_finale.append(genre)
 
+
+
+
+new_list = sorting_by_occurrence(nouvelle_liste_finale_finale)
+new_list = [[i, new_list[1][i]] for i in new_list[0]]
+
+somme1 = 0
+somme2 = 0
+for i in new_list :
+    somme1 += i[1]
+for j in liste_finale:
+    somme2 += j[1]
+
+
+with open(path + "Genres_Musicaux_simplifiés.txt", 'w') as file:
+    file.write(f"Il y a {len(new_list)} genres nommés différemment\n")
+    for element in new_list:
+        file.write(f"{element}\n")
+
+print(somme1, somme2)
+print(divide_str('rock'))
