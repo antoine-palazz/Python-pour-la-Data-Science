@@ -38,7 +38,7 @@ nb_utilisation_token_artist = nb_artist // 50 + int(nb_artist % 50 != 0)
 artist_genres_list = []
 
 for k in range(nb_utilisation_token_artist-1):
-    artist_genres_list = artist_genres__list + get_artists_genres(artist_list[50*k:50*(k+1)], headers)
+    artist_genres_list = artist_genres_list + get_artists_genres(artist_list[50*k:50*(k+1)], headers)
     print(k/nb_utilisation_token_artist)
 artist_genres_list = artist_genres_list + get_artists_genres(artist_list[(nb_utilisation_token_track-1)*50:], headers)
 Titles['genres'] = artist_genres_list

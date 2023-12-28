@@ -56,4 +56,4 @@ def get_track_id_and_artist(tracks):
 
 playlist_tracks = get_all_playlist_tracks(playlist_id, access_token)
 Titles = get_track_id_and_artist(playlist_tracks)
-print(Titles)
+print(Titles.heas())
