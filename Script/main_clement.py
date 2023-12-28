@@ -130,7 +130,7 @@ for genre in nouvelle_liste_finale:
                         break
             if i == 1:
                 break
-        
+
     else :
         nouvelle_liste_finale_finale.append(genre)
 
