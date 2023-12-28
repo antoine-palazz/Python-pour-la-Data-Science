@@ -1,14 +1,15 @@
-from Script.functions import *
+from functions import *
 
 
 # Access to the API
-token = access_token()
-headers = {'Authorization': f'Bearer {token}',}
+access_token = get_access_token()
+headers = {'Authorization': f'Bearer {access_token}',}
 
 
 playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
 playlist_tracks = get_all_playlist_tracks(playlist_id, access_token)
 Dataset = get_track_id_and_artist(playlist_tracks)
+# Now we have a dataset of the title, the artist name, the artist id.
 
 
 track_list = Dataset['track_id'].tolist()
@@ -20,17 +21,17 @@ track_features_list = []
 for k in range(nb_utilisation_token_track-1):
     track_features_list = track_features_list + get_track_features(track_list[100*k:100*(k+1)],headers)
 track_features_list = track_features_list + get_track_features(track_list[(nb_utilisation_token_track-1)*100:],headers)
-Titles['track_features'] = track_features_list
+Dataset['track_features'] = track_features_list
 
 
 Features = get_features_labels(headers)
 #print(Features)
 
 for feature in Features:
-    Titles[feature] = Titles['track_features'].apply(lambda x: x.get(feature))
-Titles.drop(columns=['track_features'], inplace = True)
+    Dataset[feature] = Dataset['track_features'].apply(lambda x: x.get(feature))
+Dataset.drop(columns=['track_features'], inplace = True)
 
-artist_list = Titles['artist_id'].tolist()
+artist_list = Dataset['artist_id'].tolist()
 nb_artist = len(artist_list)
 print("il y a", nb_artist, "artistes")
 nb_utilisation_token_artist = nb_artist // 50 + int(nb_artist % 50 != 0)
@@ -40,10 +41,11 @@ for k in range(nb_utilisation_token_artist-1):
     artist_genres_list = artist_genres_list + get_artists_genres(artist_list[50*k:50*(k+1)], headers)
     print(k/nb_utilisation_token_artist)
 artist_genres_list = artist_genres_list + get_artists_genres(artist_list[(nb_utilisation_token_artist-1)*50:], headers)
-Titles['genres'] = artist_genres_list
+Dataset['genres'] = artist_genres_list
 
-print(Titles.head())
+print(Dataset.head())
 
-
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles3.csv'
-Titles.to_csv(path, index=False)
+# Select the path you want 
+#path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles3.csv'
+#path = "/Users/clementgadeau/Python pour la DATA/DATA_SET/Our DATA_SET/"
+Dataset.to_csv(path, index=False)

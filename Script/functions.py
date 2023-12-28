@@ -4,22 +4,23 @@ from base64 import b64encode
 import matplotlib.pyplot as plt
 
 
-def access_token():
+def get_access_token():
     """
     Return the access token for Spotify API
     """
     client_id = "b6871ef2f14a4b60888a32454862b876"
     client_secret = "3a5d22aa09434e32a9760159ca3bb234"
+    
+    #client_id = 
+    #client_secret = 
+    
     token_url = "https://accounts.spotify.com/api/token"
 
     # Concatène client-id et client_secret, puis les encode en base64
     credentials = b64encode(f"{client_id}:{client_secret}".encode()).decode('utf-8')
 
     # En-têtes de la requête
-    headers = {
-        'Authorization': f'Basic {credentials}',
-        'Content-Type': 'application/x-www-form-urlencoded',
-    }
+    headers = {'Authorization': f'Basic {credentials}','Content-Type': 'application/x-www-form-urlencoded',}
 
     # Corps de la requête
     data = {
@@ -40,7 +41,7 @@ def access_token():
 
 def access_API():
     # Access to the API
-    token = access_token()
+    token = get_access_token()
 
     # Request with the access token :
     headers = {
