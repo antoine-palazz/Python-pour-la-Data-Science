@@ -1,15 +1,15 @@
 #%%
 import pandas as pd
 import matplotlib.pyplot as plt
-Titles_en_csv = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/Titles.csv'
+Titles_en_csv = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
 
 # Lire le fichier CSV avec des options supplémentaires
-Titles = pd.read_csv(Titles_en_csv, delimiter=',')
+df = pd.read_csv(Titles_en_csv, delimiter=',')
 
 # Afficher les premières lignes du DataFrame
-print(Titles.head())
+print(df.head())
 #création d'un dictionnaire des genres
-genres_list = Titles['genres'].tolist()
+genres_list = df['genre'].tolist()
 genres = {}
 for genre in genres_list:
     if genre in genres.keys():
