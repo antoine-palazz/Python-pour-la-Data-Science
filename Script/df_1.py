@@ -26,16 +26,16 @@ def add_track_feature_to_a_dataset(sub_df,headers):
     return sub_df
 
 list_sub_df = []
-playlist_id_list = [('0ZwUMU8Kt8e141i5aqhDfD','rock'),('4KsrGBWG6gzBwGe9dx16OE','rap'),('33mU9g6y8nKFAOyiISor0G','country'),('7BDUphylF8dfPKFo9Tvdr9','blues')]
+playlist_id_list_1 = [('0ZwUMU8Kt8e141i5aqhDfD','rock'),('4KsrGBWG6gzBwGe9dx16OE','rap'),('33mU9g6y8nKFAOyiISor0G','country'),('7BDUphylF8dfPKFo9Tvdr9','blues'),('1yYEy4MtNLVScj74wcPR7w','metal')]
 
-for playlist_id, genre_playlist in playlist_id_list:
+for playlist_id, genre_playlist in playlist_id_list_1:
     playlist_tracks = get_all_playlist_tracks(playlist_id, token)
     sub_df = get_track_id_and_artist(playlist_tracks)
     sub_df = add_track_feature_to_a_dataset(sub_df,headers)
     sub_df['genre'] = genre_playlist
     list_sub_df.append(sub_df)
 
-df = pd.concat(list_sub_df, axis = 0)
+df_1 = pd.concat(list_sub_df, axis = 0)
 
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
-df.to_csv(path, index=False)
+path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df_1.csv'
+df_1.to_csv(path, index=False)
