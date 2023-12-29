@@ -165,19 +165,26 @@ for genre_list in data_set['genres'].tolist():
     else:
         tracks_genre.append(['Pas de genre'])
 
-print(tracks_genre, tracks_genre.count(['Pas de genre']))
+#print(tracks_genre, tracks_genre.count(['Pas de genre']))
 
 tracks_genre_simplified = []
-for genre_list in tracks_genre:
+j, h = 0, 0
+for genre_list_init in tracks_genre:
     i = 0
-    genre_list = [i for genre in genre_list for i in divide_str(genre)]
+    genre_list = [i for i in genre_list_init]
+    for genre in genre_list_init :
+        genre_list = genre_list + [i for i in divide_str(genre)]
     for genre in new_list:
         if genre[0] in genre_list:
             tracks_genre_simplified.append(genre[0])
             i += 1
+            h += 1
             break
     if i == 0:
         tracks_genre_simplified.append('Sans genre')
+        j += 1
+
+print(j, h, j+h)
 
 #print(tracks_genre_simplified, len(tracks_genre_simplified))
 
