@@ -1,12 +1,12 @@
 import pandas as pd
 import ast
 
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/'
+path = '/Users/clementgadeau/Python pour la DATA/Sauvegarde Git/Python-pour-la-Data-Science/Data/data/'
 
 data_set = pd.read_csv(path + 'Titles2.csv')
-
 union_genres = []
 
+# Makes a list of all genres
 for genre_str in data_set['genres']:
     if pd.notna(genre_str):
         # Utilisez ast.literal_eval pour évaluer la chaîne comme une liste
@@ -22,14 +22,16 @@ with open(path + "Genres_Musicaux.txt", 'w') as file:
         file.write(f"{element}\n")
 """
 
+
 def count_occurrence(list):
+    """Returns a dictionnary of the occurrences of each genre."""
     occurrences = {}
     for element in list:
         occurrences[element] = occurrences.get(element, 0) + 1
     return occurrences
 
-
 def sorting_by_occurrence(list):
+    """Returns a sorted list of genres from most to least frequent, and the dictionnary of occurences."""
     occurrences = count_occurrence(list)
     sorted_list = sorted(occurrences.keys(), key=lambda x: occurrences[x], reverse=True)
     return sorted_list, occurrences
@@ -47,6 +49,10 @@ with open(path + "Genres_Musicaux_multiplicité.txt", 'w') as file:
 
 
 def divide_str(string):
+    """
+    Returns a list of each words of a string.
+    A word is considered to be something
+    """
     # Utiliser la méthode split pour diviser la chaîne en mots
     words = string.split()  # Divise automatiquement en utilisant l'espace comme séparateur
     # Diviser également en utilisant le tiret comme séparateur
@@ -202,4 +208,36 @@ with open(path + "Genres_Musicaux_data.txt", 'w') as file:
     file.write(f"Je compte {somme3} morceaux différents avec mon alogrithme\n")
     for element in tracks_genre_simplified_per_occurrence:
         file.write(f"{element}\n")
-        
+
+
+# Let put that into functions : 
+def delete_nan(df):
+    return(df.dropna(subset=['genres']))
+
+"""
+def find_genres_by_words(genres_list, nb_words = 1):
+    for genre in genres_list:
+        if genre 
+    return
+"""
+
+
+
+def reduce_genres_list(list_of_genres):
+    sorted_list = sorted(list_of_genres, key=lambda x: len(x))
+    visited_words = []
+    dict = {}
+    for genre in sorted_list:
+        dict[genre] = [genre]
+        c = 0
+        for word in visited_words:
+            if word in genre and word != genre:
+                dict[genre] += [word]
+                c += 1
+        if c > 0:
+            dict[genre].remove(genre)
+        visited_words += [genre]
+    return dict
+
+#Let's clean our genres column.
+#data_set['Sorted_genres'] = data_set
