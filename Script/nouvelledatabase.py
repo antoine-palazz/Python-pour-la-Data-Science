@@ -2,8 +2,9 @@
 Run this file to create your data base
 """
 from _0_init import token, headers
-from Script.deleted_script4 import get_all_playlist_tracks, get_track_id_and_artist
+from deleted_script4 import get_all_playlist_tracks, get_track_id_and_artist
 import pandas as pd
+from delated_script2 import get_track_features, get_features_labels
 
 def add_track_feature_to_a_dataset(sub_df,headers):
     #We now request the track features of our tracks.
@@ -36,4 +37,5 @@ for playlist_id, genre_playlist in playlist_id_list:
 
 df = pd.concat(list_sub_df, axis = 0)
 
-print(df.head())
+path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
+df.to_csv(path, index=False)

@@ -1,8 +1,8 @@
-from script2 import *
+from delated_script2 import *
 
 access_token = access_token()
 
-playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
+#playlist_id = '04ZwFco4KsjgPlVMtzwfgS'
 
 # Obtenez les pistes de la playlist avec gestion de la pagination
 def get_all_playlist_tracks(playlist_id, access_token):
@@ -53,7 +53,8 @@ def get_track_id_and_artist(tracks):
         print("Aucune piste trouvée.")
         return None
 
-
+'''
 playlist_tracks = get_all_playlist_tracks(playlist_id, access_token)
 Titles = get_track_id_and_artist(playlist_tracks)
 print(Titles.head())
+'''
