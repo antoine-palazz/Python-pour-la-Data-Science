@@ -266,3 +266,6 @@ dict = reduce_genres_list(get_genres_list(data_set))
 data_set['Sorted_genres'] = data_set.apply(lambda row: remake_genre_list(row['genres'], dict), axis=1)
 
 data_set.to_csv(path + "Titles4.csv", index=False)
+
+dataframe = data_set['Sorted_genres'].value_counts()
+dataframe.to_csv(path + 'Genres_different_etape1.csv')

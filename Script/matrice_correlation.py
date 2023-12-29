@@ -4,7 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import ast
 
-df_str = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
+#df_str = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
+df_str =  '/Users/clementgadeau/Python pour la DATA/Sauvegarde Git/Python-pour-la-Data-Science/Data/data/df.csv'
 
 
 
@@ -12,7 +13,8 @@ df_str = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
 df = pd.read_csv(df_str, delimiter=',')
 df = df.drop(['type','uri','id','track_href','analysis_url','artist','artist_id','genre','Title','track_id'], axis = 1)
 
-path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df_numeral.csv'
+#path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df_numeral.csv'
+path = '/Users/clementgadeau/Python pour la DATA/Sauvegarde Git/Python-pour-la-Data-Science/Data/data/df_numeral.csv'
 df.to_csv(path, index=False)
 
 #%%
@@ -20,7 +22,7 @@ df.to_csv(path, index=False)
 import pandas as pd
 import matplotlib.pyplot as plt
 f = plt.figure()
-df_numeral_str = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df_numeral.csv'
+df_numeral_str = path #'/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df_numeral.csv'
 
 # Lire le fichier CSV avec des options supplémentaires
 df_numeral = pd.read_csv(df_numeral_str, delimiter=',')

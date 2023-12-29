@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 path = '/Users/clementgadeau/Python pour la DATA/Sauvegarde Git/Python-pour-la-Data-Science/Data/data/'
-file = 'Titles2.csv'
+file = 'df.csv'
 
 df = pd.read_csv(path+file)
+variables = ['danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','type','id','uri','track_href','analysis_url','duration_ms','time_signature','genre']
 
 # Count the occurrences of each genre
 genres_counts = df['genres'].str.split(', ').explode().value_counts()
