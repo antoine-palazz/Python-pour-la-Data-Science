@@ -25,7 +25,7 @@ def add_track_feature_to_a_dataset(sub_df,headers):
     return sub_df
 
 list_sub_df = []
-playlist_id_list = [('4KsrGBWG6gzBwGe9dx16OE','rap')]
+playlist_id_list = [('0ZwUMU8Kt8e141i5aqhDfD','rock'),('4KsrGBWG6gzBwGe9dx16OE','rap'),('33mU9g6y8nKFAOyiISor0G','country'),('7BDUphylF8dfPKFo9Tvdr9','blues')]
 
 for playlist_id, genre_playlist in playlist_id_list:
     playlist_tracks = get_all_playlist_tracks(playlist_id, token)
