@@ -251,3 +251,37 @@ def get_artists_genres(artist_ids, headers):
         print(f"Erreur {response.status_code}: Impossible d'obtenir les genres des artistes.")
         return [None]*len(artist_ids)
 
+
+def reduce_genres_list(list_of_genres):
+    sorted_list = sorted(list_of_genres, key=lambda x: len(x))
+    visited_words = []
+    dict = {}
+    for genre in sorted_list:
+        dict[genre] = [genre]
+        c = 0
+        for word in visited_words:
+            if word in genre and word != genre:
+                dict[genre] += [word]
+                c += 1
+        if c > 0:
+            dict[genre].remove(genre)
+        visited_words += [genre]
+    return dict
+
+
+def get_genres_list(data_set):
+    union_genres = set()
+    for genre_str in data_set['genres']:
+        if pd.notna(genre_str):
+            # We use ast.literal_eval to get a list from a string of a list
+            genre_list = ast.literal_eval(genre_str)
+            union_genres = union_genres.union(set(genre_list))
+    return(list(union_genres))
+
+
+def remake_genre_list(genre_list, dict):
+    new_list = []
+    for genre in genre_list:
+        new_list += dict[genre]
+    most_frequent_genre = max(set(new_list), key=new_list.count)
+    return most_frequent_genre
