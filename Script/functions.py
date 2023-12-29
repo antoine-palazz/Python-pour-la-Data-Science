@@ -252,6 +252,9 @@ def get_artists_genres(artist_ids, headers):
         return [None]*len(artist_ids)
 
 
+
+# The four following functions are used to reorganize the 'genres' column in our dataset.
+
 def reduce_genres_list(list_of_genres):
     sorted_list = sorted(list_of_genres, key=lambda x: len(x))
     visited_words = []

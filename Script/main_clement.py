@@ -211,17 +211,6 @@ with open(path + "Genres_Musicaux_data.txt", 'w') as file:
 
 
 # Let put that into functions : 
-def delete_nan(df):
-    return(df.dropna(subset=['genres']))
-
-"""
-def find_genres_by_words(genres_list, nb_words = 1):
-    for genre in genres_list:
-        if genre 
-    return
-"""
-
-
 
 def reduce_genres_list(list_of_genres):
     sorted_list = sorted(list_of_genres, key=lambda x: len(x))
@@ -252,13 +241,22 @@ def get_genres_list(data_set):
 
 def remake_genre_list(genre_list, dict):
     new_list = []
-    for genre in genre_list:
+    for genre in ast.literal_eval(genre_list):
         new_list += dict[genre]
+    print(new_list)
     most_frequent_genre = max(set(new_list), key=new_list.count)
     return most_frequent_genre
 
 
-
 #Let's clean our genres column.
+df = pd.read_csv(path + "Titles2.csv")
+print("nombre de lignes avant avant ", df.shape[0])
+df = df.dropna(subset=['genres'])
+print("nombre de lignes avant ", df.shape[0])
+df = df[df['genres'].apply(lambda x: isinstance(x, str) and any(c.isalpha() for c in x))]
+df.to_csv(path + 'Titles_test.csv', index = False)
+print("nombre de lignes après ", df.shape[0], ' soit ', 9999 - df.shape[0])
 
-#data_set['Sorted_genres'] = data_set
+dict = reduce_genres_list(get_genres_list(df))
+data_set['Sorted_genres'] = data_set.apply(lambda row: remake_genre_list(row['genres'], dict), axis=1)
+data_set.to_csv(path + "Titles4.csv", index=False)
