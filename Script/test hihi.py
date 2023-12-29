@@ -1,0 +1,1 @@
+print('rock' in "j aprecie le saferockabilly_gin")
