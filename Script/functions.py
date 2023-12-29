@@ -3,16 +3,15 @@ import pandas as pd
 from base64 import b64encode
 import matplotlib.pyplot as plt
 
-
 def get_access_token():
     """
     Return the access token for Spotify API
     """
-    client_id = "b6871ef2f14a4b60888a32454862b876"
-    client_secret = "3a5d22aa09434e32a9760159ca3bb234"
-    
-    #client_id = 
-    #client_secret = 
+    logins = "Data/data/logins.txt"
+    with open(logins, "r") as file:
+        client_id = str(file.readline().strip())
+        client_secret = str(file.readline())
+    file.close()
     
     token_url = "https://accounts.spotify.com/api/token"
 
@@ -38,6 +37,8 @@ def get_access_token():
     else:
         print(f"Erreur lors de la demande du token : {response.status_code} - {response.text}")
         return(None)
+
+get_access_token()
 
 def access_API():
     # Access to the API
