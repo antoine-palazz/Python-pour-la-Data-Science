@@ -1,7 +1,7 @@
 import pandas as pd
 import ast
 
-path = '/Users/clementgadeau/Python pour la DATA/Sauvegarde Git/Python-pour-la-Data-Science/Data/data/'
+path = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/'
 
 data_set = pd.read_csv(path + 'Titles2.csv')
 
