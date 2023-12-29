@@ -241,9 +241,12 @@ def get_genres_list(data_set):
 
 def remake_genre_list(genre_list, dict):
     new_list = []
+    print(ast.literal_eval(genre_list))
     for genre in ast.literal_eval(genre_list):
         new_list += dict[genre]
     print(new_list)
+    #if new_list == []:
+    #    return None
     most_frequent_genre = max(set(new_list), key=new_list.count)
     return most_frequent_genre
 
@@ -253,10 +256,13 @@ df = pd.read_csv(path + "Titles2.csv")
 print("nombre de lignes avant avant ", df.shape[0])
 df = df.dropna(subset=['genres'])
 print("nombre de lignes avant ", df.shape[0])
-df = df[df['genres'].apply(lambda x: isinstance(x, str) and any(c.isalpha() for c in x))]
+df = df[df['genres'].apply(lambda x: (isinstance(x, str) and any(c.isalpha() for c in x)))]# or (isinstance(x, list) and len(x) > 0))]
 df.to_csv(path + 'Titles_test.csv', index = False)
 print("nombre de lignes après ", df.shape[0], ' soit ', 9999 - df.shape[0])
 
-dict = reduce_genres_list(get_genres_list(df))
+data_set = df.copy()
+
+dict = reduce_genres_list(get_genres_list(data_set))
 data_set['Sorted_genres'] = data_set.apply(lambda row: remake_genre_list(row['genres'], dict), axis=1)
+
 data_set.to_csv(path + "Titles4.csv", index=False)
