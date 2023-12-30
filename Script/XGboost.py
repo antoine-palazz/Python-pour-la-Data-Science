@@ -1,3 +1,5 @@
+# %%
+
 import pandas as pd # Pour le dataframe
 import numpy as np # Pour la normalisation et calculs de moyenne
 import matplotlib.pyplot as plt # Pour la visualisation
@@ -78,7 +80,7 @@ random_grid = {
     "subsample" : [0.8]}
 
 pprint(random_grid)
-
+'''
 # création du modèle
 clf = XGBClassifier(objective= 'multi:softprob', random_state=42)
 
@@ -110,7 +112,7 @@ grid.fit(train_features, train_genres)
 pd_res = pd.concat([pd.DataFrame(grid.cv_results_["params"]),pd.DataFrame(grid.cv_results_["mean_test_score"], columns=["Accuracy"])],axis=1)
 pd_res = pd_res.sort_values('Accuracy', ascending=False)
 print(pd_res)
-
+'''
 # model
 model_xgb = XGBClassifier(objective='multi:softprob', colsample_bylevel=1, colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=0, max_depth=20, min_child_weight=1, n_estimators=300, subsample=0.8, random_state = 42)
 
@@ -123,3 +125,21 @@ predict_test = model_xgb.predict(test_features)
 # Accuracy Score on test dataset
 accuracy_test = accuracy_score(test_genres, predict_test)
 print('\naccuracy_score on test dataset : ', accuracy_test)
+print(classification_report(predict_test, test_genres))
+
+#Matrice de confusion
+mat = confusion_matrix(test_genres, predict_test)
+plt.imshow(mat, cmap='viridis', interpolation='nearest')
+#plt.colorbar(label='Valeurs')
+plt.title('Matrice de Confusion')
+num_rows, num_cols = mat.shape
+for i in range(num_rows):
+    for j in range(num_cols):
+        plt.text(j, i, str(mat[i, j]), ha='center', va='center', color='w', fontsize=12)
+plt.grid(False)
+genres_list = ['blues','classical music','country','jazz','metal','pop','r&b','rap','rock']
+plt.xticks(np.arange(num_cols), genres_list, rotation=45, ha='right')
+plt.yticks(np.arange(num_rows), genres_list)
+plt.xlabel('true genre')
+plt.ylabel('predicted genre')
+plt.show()
