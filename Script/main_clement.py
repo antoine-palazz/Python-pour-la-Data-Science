@@ -245,8 +245,6 @@ def remake_genre_list(genre_list, dict):
     for genre in ast.literal_eval(genre_list):
         new_list += dict[genre]
     print(new_list)
-    #if new_list == []:
-    #    return None
     most_frequent_genre = max(set(new_list), key=new_list.count)
     return most_frequent_genre
 
@@ -256,7 +254,7 @@ df = pd.read_csv(path + "Titles2.csv")
 print("nombre de lignes avant avant ", df.shape[0])
 df = df.dropna(subset=['genres'])
 print("nombre de lignes avant ", df.shape[0])
-df = df[df['genres'].apply(lambda x: (isinstance(x, str) and any(c.isalpha() for c in x)))]# or (isinstance(x, list) and len(x) > 0))]
+df = df[df['genres'].apply(lambda x: (isinstance(x, str) and any(c.isalpha() for c in x)))]
 df.to_csv(path + 'Titles_test.csv', index = False)
 print("nombre de lignes après ", df.shape[0], ' soit ', 9999 - df.shape[0])
 

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def get_access_token():
     """
-    Return the access token for Spotify API
+    Returns the access token for Spotify API
     """
     logins = "Data/data/logins.txt"
     with open(logins, "r") as file:
@@ -15,30 +15,27 @@ def get_access_token():
     
     token_url = "https://accounts.spotify.com/api/token"
 
-    # Concatène client-id et client_secret, puis les encode en base64
+    # Concatenates client-id and client_secret, then encodes them in base64
     credentials = b64encode(f"{client_id}:{client_secret}".encode()).decode('utf-8')
 
-    # En-têtes de la requête
+    # Requests headers
     headers = {'Authorization': f'Basic {credentials}','Content-Type': 'application/x-www-form-urlencoded',}
 
-    # Corps de la requête
-    data = {
-        'grant_type': 'client_credentials',
-    }
+    # Requests body
+    data = {'grant_type': 'client_credentials',}
 
-    # Effectuer la requête POST
+    # Does the Request
     response = requests.post(token_url, headers=headers, data=data)
 
-    # Vérifier la réponse
+    # Makes sure the response does not mean error.
     if response.status_code == 200:
-        # La réponse est au format JSON, vous pouvez extraire le jeton d'accès de cette façon
+        # We obtain the access token
         access_token = response.json().get('access_token')
         return(access_token)
     else:
-        print(f"Erreur lors de la demande du token : {response.status_code} - {response.text}")
+        print(f"Error during the token request : {response.status_code} - {response.text}")
         return(None)
 
-get_access_token()
 
 def access_API():
     # Access to the API
@@ -150,7 +147,7 @@ def get_track_analysis(track_id, headers):
 
 def get_features_labels(headers):
     """
-    Returns a list of the features labels the spotify API gives us
+    Returns the list of the features labels the spotify API gives us
     """
     track_id = get_track_id("Lose Yourself", headers)
     data_features = get_audio_features(track_id, headers)
@@ -179,7 +176,7 @@ def get_analysis_labels(headers):
 def get_all_playlist_tracks(playlist_id, access_token):
     playlist_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
     headers = {'Authorization': 'Bearer ' + access_token}
-    params = {'offset': 0, 'limit': 100}  # Limitez la réponse à 100 pistes à la fois
+    params = {'offset': 0, 'limit': 100}  # Limits the response to 100 each time.
 
     all_tracks = []
 
@@ -191,14 +188,14 @@ def get_all_playlist_tracks(playlist_id, access_token):
             tracks = playlist_data['items']
             all_tracks.extend(tracks)
 
-            # Vérifiez s'il y a plus de pistes à récupérer
+            # Check if there are other tracks to recover
             if playlist_data['next']:
-                # Mettez à jour l'offset pour obtenir la page suivante
+                # Update the offset to get the following page.
                 params['offset'] += params['limit']
             else:
                 break
         else:
-            print(f"Erreur lors de la récupération des pistes de la playlist. Code d'erreur : {response.status_code}")
+            print(f"Error retrieving tracks from playlist. Error code : {response.status_code}")
             return None
 
     return all_tracks
@@ -221,26 +218,25 @@ def get_track_id_and_artist(tracks):
         df['artist_id'] = artist_id
         return df
     else:
-        print("Aucune piste trouvée.")
+        print("No track found.")
         return None
 
-
 def get_artists_genres(artist_ids, headers):
-    # Convertir la liste d'IDs d'artistes en une chaîne séparée par des virgules
+    # Convert the list of artist IDs to a comma-separated string
     artists_str = ",".join(artist_ids)
 
-    # Endpoint pour obtenir les informations sur plusieurs artistes
+    # Endpoint to obtain information on several artists
     endpoint = f"https://api.spotify.com/v1/artists?ids={artists_str}"
 
-    # Faire la requête GET à l'API Spotify
+    # Make a GET request to the Spotify API
     response = requests.get(endpoint, headers=headers)
 
-    # Vérifier si la requête a réussi (statut 200 OK)
+    # Check if request was successful (status 200 OK)
     if response.status_code == 200:
-        # Analyser la réponse JSON
+        # Analyze the JSON response
         data = response.json()
 
-        # Récupérer les genres de chaque artiste
+        # Recover each artist's genre
         all_genres = []
         for artist_data in data["artists"]:
             genres = artist_data.get("genres", [])
@@ -248,7 +244,7 @@ def get_artists_genres(artist_ids, headers):
 
         return all_genres
     else:
-        # Afficher un message d'erreur si la requête a échoué
+        # Display error message if query failed
         print(f"Erreur {response.status_code}: Impossible d'obtenir les genres des artistes.")
         return [None]*len(artist_ids)
 
