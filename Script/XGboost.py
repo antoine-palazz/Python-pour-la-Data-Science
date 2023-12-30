@@ -1,130 +1,3 @@
-'''import pandas as pd # Pour le dataframe
-import numpy as np # Pour la normalisation et calculs de moyenne
-import matplotlib.pyplot as plt # Pour la visualisation
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.model_selection import train_test_split, GridSearchCV, validation_curve, RandomizedSearchCV # Split de dataset et optimisation des hyperparamètres
-from sklearn.ensemble import GradientBoostingClassifier # XGBoost
-from xgboost import XGBClassifier
-from pprint import pprint
-from sklearn.metrics import accuracy_score, confusion_matrix, recall_score, f1_score, zero_one_loss, classification_report # Métriques pour la mesure de performances
-from sklearn.preprocessing import normalize, StandardScaler
-
-df_str = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
-df = pd.read_csv(df_str, delimiter=',')
-df = df.drop(['type','uri','id','track_href','analysis_url','artist','artist_id','Title','track_id'], axis = 1)
-features = df
-# valeurs à prédire
-genres = np.array(features['genre'])
-# supprime les labels des données
-features = features.drop('genre', axis = 1)
-# sauvegarde le nom de features
-feature_list = list(features.columns)
-# conversion en numpy array
-features = np.array(features)
-
-# séparer les données en training and testing sets
-train_features, test_features, train_genres, test_genres = train_test_split(features, genres, test_size = 0.25, random_state = 0, shuffle = True)
-print('Training Features Shape:', train_features.shape)
-print('Training Genres Shape:', train_genres.shape)
-print('Testing Features Shape:', test_features.shape)
-print('Testing Genres Shape:', test_genres.shape)
-
-sc = StandardScaler()
-train_features = sc.fit_transform(train_features)
-test_features = sc.transform(test_features)
-
-#model = XGBClassifier(objective='multi:softprob', colsample_bylevel=1, colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=3, max_depth=10, min_child_weight=1, n_estimators=300, subsample=0.8, random_state = 0)
-model = XGBClassifier(objective='multi:softprob', colsample_bylevel=1, colsample_bytree=1, gamma=0, learning_rate=0.1, max_delta_step=0, max_depth=10, min_child_weight=1, n_estimators=300, subsample=0.8, random_state = 0)
-
-# fit the model with the training data
-model.fit(train_features, train_genres)
- 
-# predict the target on the test dataset
-predict_test = model.predict(test_features)
- 
-# Accuracy Score on test dataset
-accuracy_test = accuracy_score(test_genres, predict_test)
-print('\naccuracy_score on test dataset : ', accuracy_test)
-
-from xgboost import XGBClassifier
-from sklearn.preprocessing import MinMaxScaler
-import pandas as pd
-import numpy as np
-import xgboost as xgb
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import normalize, StandardScaler
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
-
-df_str = '/home/onyxia/work/Python-pour-la-Data-Science/Data/data/df.csv'
-df = pd.read_csv(df_str, delimiter=',')
-df = df.drop(['type','uri','id','track_href','analysis_url','artist','artist_id','Title','track_id'], axis = 1)
-
-def genre_to_num(genre):
-    if genre == 'rock':
-        return 8
-    if genre == 'rap':
-        return 7
-    if genre == 'r&b':
-        return 6
-    if genre == 'pop':
-        return 5
-    if genre == 'metal':
-        return 4
-    if genre == 'jazz':
-        return 3
-    if genre == 'country':
-        return 2
-    if genre == 'classical music':
-        return 1
-    if genre == 'blues':
-        return 0
-#df['genre'] = df['genre'].apply(genre_to_num)
-
-features = df.copy()
-# valeurs à prédire
-genres = np.array(features['genre'])
-# supprime les labels des données
-features = features.drop('genre', axis = 1)
-# sauvegarde le nom de features
-feature_list = list(features.columns)
-# conversion en numpy array
-features = np.array(features)
-
-genres_str = [str(label) for label in genres]
-genres_str = np.array(genres_str)
-
-# séparer les données en training and testing sets
-train_features, test_features, train_genres, test_genres = train_test_split(features, genres_str, test_size = 0.25, random_state = 0, shuffle = True)
-print('Training Features Shape:', train_features.shape)
-print('Training Genres Shape:', train_genres.shape)
-print('Testing Features Shape:', test_features.shape)
-print('Testing Genres Shape:', test_genres.shape)
-
-dtrain = xgb.DMatrix(train_features, label=train_genres)
-dtest = xgb.DMatrix(test_features, label=test_genres)
-
-param = {
-    'objective': 'multi:softmax',  # pour un problème de classification multiclasse
-    'num_class': 9,  # nombre de classes dans votre problème
-    'max_depth': 20,
-    'eta': 0.1,
-    'silent': 1,
-    'n_jobs': -1
-}
-num_round = 100
-bst = xgb.train(param, dtrain, num_round)
-
-# Faire des prédictions sur l'ensemble de test
-pred_genres = bst.predict(dtest)
-pred_genres_str = [str(label) for label in pred_genres]
-# Calculer l'exactitude
-print("Classification Report:")
-print(classification_report(test_genres, pred_genre_str))
-
-boost = XGBClassifier()
-boost.fit(train_features, train_genres)
-p_boost = boost.predict(train_features)
-print ("Score Train -->", round(boost.score(train_features, train_genres) *100,2), " %")'''
 import pandas as pd # Pour le dataframe
 import numpy as np # Pour la normalisation et calculs de moyenne
 import matplotlib.pyplot as plt # Pour la visualisation
@@ -194,6 +67,11 @@ print('Parameters currently in use:\n')
 pprint(clf.get_params())
 
 random_grid = {
+    "colsample_bylevel" : [1],
+    "colsample_bytree" : [1],
+    "gamma" : [0],
+    "max_delta_step" : [0],
+    "min_child_weight" : [1],
     "learning_rate" : [0.1],
     "max_depth" : [20, None],
     "n_estimators" : [100, 200, 300, 400, 500], 
@@ -215,7 +93,7 @@ pd_res = pd_res.sort_values('Accuracy', ascending=False)
 print(pd_res)
 
 param_grid = {
-    "learning_rate" : [0.1, 0.01], #d0.3
+    "learning_rate" : [0.1], #d0.3
     "max_depth"        : [20], #d6
     "n_estimators" : [300, 350, 450], #d100
     "subsample" : [0.8], #d1
