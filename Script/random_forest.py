@@ -39,7 +39,7 @@ print('Parameters currently in use:\n')
 pprint(rf.get_params())
 
 # nombre d'arbres
-n_estimators = [500, 1000, 2000, 3000, 4000, 5000]
+n_estimators = [500, 1000, 2000, 4000]
 # profondeur max de l'arbre
 max_depth = [20]
 max_depth.append(None)
@@ -60,7 +60,7 @@ pprint(random_grid)
 rf = RandomForestClassifier(random_state = 0, max_features = 'sqrt', bootstrap = True)
 
 # random search
-rf_random = RandomizedSearchCV(estimator = rf, param_distributions = random_grid, n_iter = 10, cv = 3, verbose=2, random_state=0, n_jobs = -1)
+rf_random = RandomizedSearchCV(estimator = rf, param_distributions = random_grid, n_iter = 32, cv = 3, verbose=2, random_state=0, n_jobs = -1)
 
 # fit le modèle
 rf_random.fit(train_features, train_genres)
