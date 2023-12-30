@@ -1,4 +1,4 @@
-# Python-pour-la-Data-Science
+# __Python-pour-la-Data-Science__
 
 Vous trouverez dans ce répertoire le projet réalisé par Valentin Smague et Clément Gadeau, qui essaie de donner une réponse à la question suivante : *Peut-on à partir de données quantitatives sur un morceau, prédire le genre musical auquel il appartient ?*
 
@@ -12,17 +12,17 @@ Vous trouverez dans ce répertoire le projet réalisé par Valentin Smague et Cl
 
 
 Voici le plan de notre projet :
-#### __I. Récupérer et traiter les données__
+## __I. Récupérer et traiter les données__
   - Requêter l'API Spotify pour constituer un premier dataset
   - Nettoyer le dataset : identifier un genre unique pour chaque morceau
   - Constituer un dataset muris de nos réflexions
 
-#### __II. Visualiser pour comprendre les données__
+## __II. Visualiser pour comprendre les données__
   - Vérifier la bonne répartition des genres musicaux
   - Comprendre le lien entre les variables et les genres
   - Mettre en évidence ces relations
 
-#### __III. Modéliser la prédiction du genre__
+## __III. Modéliser la prédiction du genre__
   - Random Forest
   - XGBoost
 
