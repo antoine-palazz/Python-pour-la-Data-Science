@@ -3,6 +3,7 @@ import pandas as pd
 from base64 import b64encode
 import matplotlib.pyplot as plt
 
+
 def get_access_token():
     """
     Returns the access token for Spotify API
@@ -12,17 +13,22 @@ def get_access_token():
         client_id = str(file.readline().strip())
         client_secret = str(file.readline())
     file.close()
-    
+
     token_url = "https://accounts.spotify.com/api/token"
 
     # Concatenates client-id and client_secret, then encodes them in base64
-    credentials = b64encode(f"{client_id}:{client_secret}".encode()).decode('utf-8')
+    credentials = b64encode(f"{client_id}:{client_secret}".encode()).decode("utf-8")
 
     # Requests headers
-    headers = {'Authorization': f'Basic {credentials}','Content-Type': 'application/x-www-form-urlencoded',}
+    headers = {
+        "Authorization": f"Basic {credentials}",
+        "Content-Type": "application/x-www-form-urlencoded",
+    }
 
     # Requests body
-    data = {'grant_type': 'client_credentials',}
+    data = {
+        "grant_type": "client_credentials",
+    }
 
     # Does the Request
     response = requests.post(token_url, headers=headers, data=data)
@@ -30,11 +36,13 @@ def get_access_token():
     # Makes sure the response does not mean error.
     if response.status_code == 200:
         # We obtain the access token
-        access_token = response.json().get('access_token')
-        return(access_token)
+        access_token = response.json().get("access_token")
+        return access_token
     else:
-        print(f"Error during the token request : {response.status_code} - {response.text}")
-        return(None)
+        print(
+            f"Error during the token request : {response.status_code} - {response.text}"
+        )
+        return None
 
 
 def access_API():
@@ -43,7 +51,7 @@ def access_API():
 
     # Request with the access token :
     headers = {
-        'Authorization': f'Bearer {token}',
+        "Authorization": f"Bearer {token}",
     }
     return (token, headers)
 
@@ -55,51 +63,60 @@ def get_track_id(track, headers):
     # Request for the track
     search_url = "https://api.spotify.com/v1/search"
     search_params = {
-        'q': track,
-        'type': 'track',
-        'limit': 1,
+        "q": track,
+        "type": "track",
+        "limit": 1,
     }
 
     # Search
     search_response = requests.get(search_url, params=search_params, headers=headers)
     search_data = search_response.json()
     # Verify if there are results
-    if 'tracks' in search_data and 'items' in search_data['tracks'] and search_data['tracks']['items']:
+    if (
+        "tracks" in search_data
+        and "items" in search_data["tracks"]
+        and search_data["tracks"]["items"]
+    ):
         # We take the ID of the first song found.
-        track_id = search_data['tracks']['items'][0]['id']
-        return (track_id)
+        track_id = search_data["tracks"]["items"][0]["id"]
+        return track_id
 
     else:
         print("Aucun résultat trouvé pour la chanson " + track)
-        return(None)
+        return None
+
 
 def get_track_details(track_ids, headers):
-    tracks_url = 'https://api.spotify.com/v1/tracks'
-    params = {'ids': ','.join(track_ids)}
+    tracks_url = "https://api.spotify.com/v1/tracks"
+    params = {"ids": ",".join(track_ids)}
 
     response = requests.get(tracks_url, headers=headers, params=params)
 
     if response.status_code == 200:
-        return response.json()['tracks']
+        return response.json()["tracks"]
     else:
-        print(f"Erreur lors de la récupération des détails des pistes. Code d'erreur : {response.status_code}")
+        print(
+            f"Erreur lors de la récupération des détails des pistes. Code d'erreur : {response.status_code}"
+        )
         return None
+
 
 def get_audio_features(track_id, headers):
     """
     Return a dictionnary for the track.
     track_id must be just a string for one single track.
     """
-    audio_features_url = f'https://api.spotify.com/v1/audio-features/{track_id}'
+    audio_features_url = f"https://api.spotify.com/v1/audio-features/{track_id}"
 
     response = requests.get(audio_features_url, headers=headers)
 
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Erreur lors de la récupération des caractéristiques audio de la piste. Code d'erreur : {response.status_code}")
+        print(
+            f"Erreur lors de la récupération des caractéristiques audio de la piste. Code d'erreur : {response.status_code}"
+        )
         return None
-
 
 
 def get_track_features(track_id, headers):
@@ -107,23 +124,22 @@ def get_track_features(track_id, headers):
     Return a dictionnary for the track features.
     track_id my be a list of under 100 tracks or just a string for one single track.
     """
-    
-    str_track_id = ','.join(track_id)
 
-    params = {'ids': str_track_id}
+    str_track_id = ",".join(track_id)
+
+    params = {"ids": str_track_id}
     features_url = "https://api.spotify.com/v1/audio-features"
-    response = requests.get(features_url, headers=headers,params=params)
+    response = requests.get(features_url, headers=headers, params=params)
     print(response)
 
-    # Verify the response: 
+    # Verify the response:
     if response.status_code == 200:
         # La réponse est au format JSON, imprimez toutes les caractéristiques
         data = response.json()
-        return(data['audio_features'])
+        return data["audio_features"]
     else:
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
-        return([None]*len(track_id))
-
+        return [None] * len(track_id)
 
 
 def get_track_analysis(track_id, headers):
@@ -139,10 +155,10 @@ def get_track_analysis(track_id, headers):
     if response.status_code == 200:
         # La réponse est au format JSON, imprimez toutes les caractéristiques
         data = response.json()
-        return(data)
+        return data
     else:
         print(f"Erreur lors de la requête : {response.status_code} - {response.text}")
-        return(None)
+        return None
 
 
 def get_features_labels(headers):
@@ -171,12 +187,11 @@ def get_analysis_labels(headers):
     return analysis
 
 
-
 # Obtenez les pistes de la playlist avec gestion de la pagination
 def get_all_playlist_tracks(playlist_id, access_token):
-    playlist_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
-    headers = {'Authorization': 'Bearer ' + access_token}
-    params = {'offset': 0, 'limit': 100}  # Limits the response to 100 each time.
+    playlist_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    headers = {"Authorization": "Bearer " + access_token}
+    params = {"offset": 0, "limit": 100}  # Limits the response to 100 each time.
 
     all_tracks = []
 
@@ -185,20 +200,23 @@ def get_all_playlist_tracks(playlist_id, access_token):
 
         if response.status_code == 200:
             playlist_data = response.json()
-            tracks = playlist_data['items']
+            tracks = playlist_data["items"]
             all_tracks.extend(tracks)
 
             # Check if there are other tracks to recover
-            if playlist_data['next']:
+            if playlist_data["next"]:
                 # Update the offset to get the following page.
-                params['offset'] += params['limit']
+                params["offset"] += params["limit"]
             else:
                 break
         else:
-            print(f"Error retrieving tracks from playlist. Error code : {response.status_code}")
+            print(
+                f"Error retrieving tracks from playlist. Error code : {response.status_code}"
+            )
             return None
 
     return all_tracks
+
 
 # Affichez les ids et les titres des musiques ainsin que les ids et les noms des artistes
 def get_track_id_and_artist(tracks):
@@ -208,18 +226,19 @@ def get_track_id_and_artist(tracks):
         artist = []
         artist_id = []
         for track in tracks:
-            title.append(track['track']['name'])
-            track_id.append(track['track']['id'])
-            artist.append(track['track']['artists'][0]['name'])
-            artist_id.append(track['track']['artists'][0]['id'])
-        df = pd.DataFrame({'Title':title})
-        df['track_id'] = track_id
-        df['artist'] = artist
-        df['artist_id'] = artist_id
+            title.append(track["track"]["name"])
+            track_id.append(track["track"]["id"])
+            artist.append(track["track"]["artists"][0]["name"])
+            artist_id.append(track["track"]["artists"][0]["id"])
+        df = pd.DataFrame({"Title": title})
+        df["track_id"] = track_id
+        df["artist"] = artist
+        df["artist_id"] = artist_id
         return df
     else:
         print("No track found.")
         return None
+
 
 def get_artists_genres(artist_ids, headers):
     # Convert the list of artist IDs to a comma-separated string
@@ -245,12 +264,14 @@ def get_artists_genres(artist_ids, headers):
         return all_genres
     else:
         # Display error message if query failed
-        print(f"Erreur {response.status_code}: Impossible d'obtenir les genres des artistes.")
-        return [None]*len(artist_ids)
-
+        print(
+            f"Erreur {response.status_code}: Impossible d'obtenir les genres des artistes."
+        )
+        return [None] * len(artist_ids)
 
 
 # The four following functions are used to reorganize the 'genres' column in our dataset.
+
 
 def reduce_genres_list(list_of_genres):
     sorted_list = sorted(list_of_genres, key=lambda x: len(x))
@@ -271,12 +292,12 @@ def reduce_genres_list(list_of_genres):
 
 def get_genres_list(data_set):
     union_genres = set()
-    for genre_str in data_set['genres']:
+    for genre_str in data_set["genres"]:
         if pd.notna(genre_str):
             # We use ast.literal_eval to get a list from a string of a list
             genre_list = ast.literal_eval(genre_str)
             union_genres = union_genres.union(set(genre_list))
-    return(list(union_genres))
+    return list(union_genres)
 
 
 def remake_genre_list(genre_list, dict):
